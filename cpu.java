@@ -1,49 +1,71 @@
-import java.util.*;
-import java.io.*;
-
 class RFLAGS {
+	RFLAGS() {
+		cf = pf = af = zf = sf = tf = intf = df = of = iopl_1 = iopl_2 = 
+		nt = rf = vm = ac = vif = vip = id = 0;
+	}
 	protected int
-		cf,   //(0)ã‚­ãƒ£ãƒªãƒ¼ãƒ•ãƒ©ã‚°
-		pf,   //(2)ãƒ‘ãƒªãƒ†ã‚£ãƒ•ãƒ©ã‚°
-		af,   //(4)èª¿æ•´ãƒ•ãƒ©ã‚°
-		zf,   //(6)ã‚¼ãƒ­ãƒ•ãƒ©ã‚°
-		sf,   //(7)ç¬¦å·ãƒ•ãƒ©ã‚°
-		tf,   //(8)ãƒˆãƒ©ãƒƒãƒ—ãƒ•ãƒ©ã‚°
-		intf, //(9)å‰²ã‚Šè¾¼ã¿å¯èƒ½ãƒ•ãƒ©ã‚°
-		df,   //(10)æ–¹å‘ãƒ•ãƒ©ã‚°
-		of,   //(11)ã‚ªãƒ¼ãƒãƒ¼ãƒ•ãƒ­ãƒ¼ãƒ•ãƒ©ã‚°
-		iopl_1, //(12)I/Oç‰¹æ¨©ãƒ¬ãƒ™ãƒ«ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ï¼ˆ2ãƒ“ãƒƒãƒˆï¼‰
+		cf,   //(0)ƒLƒƒƒŠ[ƒtƒ‰ƒO
+		pf,   //(2)ƒpƒŠƒeƒBƒtƒ‰ƒO
+		af,   //(4)’²®ƒtƒ‰ƒO
+		zf,   //(6)ƒ[ƒƒtƒ‰ƒO
+		sf,   //(7)•„†ƒtƒ‰ƒO
+		tf,   //(8)ƒgƒ‰ƒbƒvƒtƒ‰ƒO
+		intf, //(9)Š„‚è‚İ‰Â”\ƒtƒ‰ƒO
+		df,   //(10)•ûŒüƒtƒ‰ƒO
+		of,   //(11)ƒI[ƒo[ƒtƒ[ƒtƒ‰ƒO
+		iopl_1, //(12)I/O“ÁŒ ƒŒƒxƒ‹ƒtƒB[ƒ‹ƒhi2ƒrƒbƒgj
 		iopl_2, //(13)
 		nt,   //(14)Nested Task
-		rf,   //(16)å†é–‹ãƒ•ãƒ©ã‚°
-		vm,   //(17)ä»®æƒ³8086ãƒ¢ãƒ¼ãƒ‰
-		ac,   //(18)ã‚¢ãƒ©ã‚¤ãƒ¡ãƒ³ãƒˆãƒã‚§ãƒƒã‚¯
-		vif,  //(19)ãƒãƒ¼ãƒãƒ£ãƒ«å‰²ã‚Šè¾¼ã¿
-		vip,  //(20)ãƒãƒ¼ãƒãƒ£ãƒ«å‰²ã‚Šè¾¼ã¿ä¿ç•™
-		id;   //(21)è­˜åˆ¥ãƒ•ãƒ©ã‚°
+		rf,   //(16)ÄŠJƒtƒ‰ƒO
+		vm,   //(17)‰¼‘z8086ƒ‚[ƒh
+		ac,   //(18)ƒAƒ‰ƒCƒƒ“ƒgƒ`ƒFƒbƒN
+		vif,  //(19)ƒo[ƒ`ƒƒƒ‹Š„‚è‚İ
+		vip,  //(20)ƒo[ƒ`ƒƒƒ‹Š„‚è‚İ•Û—¯
+		id;   //(21)¯•Êƒtƒ‰ƒO
 
+	public String toString() {
+		String ret = "[ ";
+		if(CF()) ret = ret + "CF ";
+		if(AF()) ret = ret + "PF ";
+		if(ZF()) ret = ret + "ZF ";
+		if(SF()) ret = ret + "SF ";
+		if(TF()) ret = ret + "TF ";
+		if(IF()) ret = ret + "IF ";
+		if(DF()) ret = ret + "DF ";
+		if(OF()) ret = ret + "OF ";
+		if(NT()) ret = ret + "NT ";
+		if(RF()) ret = ret + "RF ";
+		if(VM()) ret = ret + "VM ";
+		if(AC()) ret = ret + "AC ";
+		if(VIF()) ret = ret + "VIF ";
+		if(VIP()) ret = ret + "VIP ";
+		if(ID()) ret = ret + "ID ";
+		ret = ret + "] IOPL:" + IOPL();
+		return ret;
+	}
 	public int toInt() {
-		return cf &
-			1  << 1 & 
-			pf << 2 &
-			0  << 3 &
-			af << 4 &
-			0  << 5 &
-			zf << 6 &
-			sf << 7 &
-			tf << 8 &
-			intf << 9 &
-			df << 10 &
-			of << 11 &
-			iopl_1 << 12 &
-			iopl_2 << 13 &
-			nt << 14 &
-			0  << 15 &
-			rf << 16 &
-			vm << 17 &
-			ac << 18 &
-			vif << 19 &
-			vip << 20 &
+		return 
+			cf << 0 |
+			1  << 1 | 
+			pf << 2 |
+			0  << 3 |
+			af << 4 |
+			0  << 5 |
+			zf << 6 |
+			sf << 7 |
+			tf << 8 |
+			intf << 9 |
+			df << 10 |
+			of << 11 |
+			iopl_1 << 12 |
+			iopl_2 << 13 |
+			nt << 14 |
+			0  << 15 |
+			rf << 16 |
+			vm << 17 |
+			ac << 18 |
+			vif << 19 |
+			vip << 20 |
 			id << 21;
 	}
 
@@ -99,113 +121,162 @@ class RFLAGS {
 		return id == 1;
 	}
 
-	public boolean setCF(boolean b) {
+	public RFLAGS setCF(boolean b) {
 		if(b) {
-			return cf = 1;
+			cf = 1;
 		} else {
-			return cf = 0;
+			cf = 0;
 		}
+		return this;
 	}
-	public boolean setPF(boolean b) {
+	public RFLAGS setPF(boolean b) {
 		if(b) {
-			return pf = 1;
+			pf = 1;
 		} else {
-			return pf = 0;
+			pf = 0;
 		}
-	public boolean setAF(boolean b) {
-		if(b) {
-			return af = 1;
-		} else {
-			return af = 0;
-		}
-	public boolean setZF(boolean b) {
-		if(b) {
-			return zf = 1;
-		} else {
-			return zf = 0;
+		return this;
 	}
-	public boolean setSF(boolean b) {
+	public RFLAGS setAF(boolean b) {
 		if(b) {
-			return sf = 1;
+			af = 1;
 		} else {
-			return sf = 0;
+			af = 0;
 		}
+		return this;
 	}
-	public boolean setTF(boolean b) {
+	public RFLAGS setZF(boolean b) {
 		if(b) {
-			return tf = 1;
+			zf = 1;
 		} else {
-			return tf = 0;
+			zf = 0;
 		}
-	public boolean setIF(boolean b) {
-		if(b) {
-			return intf = 1;
-		} else {
-			return intf = 0;
-		}
-	public boolean setDF(boolean b) {
-		if(b) {
-			return df = 1;
-		} else {
-			return df = 0;
+		return this;
 	}
-	public boolean setOF(boolean b) {
+	public RFLAGS setSF(boolean b) {
 		if(b) {
-			return of = 1;
+			sf = 1;
 		} else {
-			return of = 0;
+			sf = 0;
 		}
+		return this;
 	}
-	public int setIOPL(int i) {
-		if(i > 3 || i < 0) {
-			return -1;
+	public RFLAGS setTF(boolean b) {
+		if(b) {
+			tf = 1;
+		} else {
+			tf = 0;
 		}
-		IOPL_1 = i&1;
-		IOPL_2 = (i>>1)&1;
-		return i;
+		return this;
 	}
-	public boolean setNT(boolean b) {
+	public RFLAGS setIF(boolean b) {
 		if(b) {
-			return nt = 1;
+			intf = 1;
 		} else {
-			return nt = 0;
+			intf = 0;
 		}
-	public boolean setRF(boolean b) {
-		if(b) {
-			return rf = 1;
-		} else {
-			return rf = 0;
-		}
-	public boolean setVM(boolean b) {
-		if(b) {
-			return vm = 1;
-		} else {
-			return vm = 0;
+		return this;
 	}
-	public boolean setAC(boolean b) {
+	public RFLAGS setDF(boolean b) {
 		if(b) {
-			return ac = 1;
+			df = 1;
 		} else {
-			return ac = 0;
+			df = 0;
 		}
+		return this;
 	}
-	public boolean setVIF(boolean b) {
+	public RFLAGS setOF(boolean b) {
 		if(b) {
-			return vif = 1;
+			of = 1;
 		} else {
-			return vif = 0;
+			of = 0;
 		}
-	public boolean setVIP(boolean b) {
-		if(b) {
-			return vip = 1;
-		} else {
-			return vip = 0;
+		return this;
+	}
+	public RFLAGS setIOPL(int i) {
+		if(i >= 0 && i <= 3) {
+			iopl_1 = i&1;
+			iopl_2 = (i>>1)&1;
 		}
-	public boolean setID(boolean b) {
+		return this;
+	}
+	public RFLAGS setNT(boolean b) {
 		if(b) {
-			return id = 1;
+			nt = 1;
 		} else {
-			return id = 0;
+			nt = 0;
+		}
+		return this;
+	}
+	public RFLAGS setRF(boolean b) {
+		if(b) {
+			rf = 1;
+		} else {
+			rf = 0;
+		}
+		return this;
+	}
+	public RFLAGS setVM(boolean b) {
+		if(b) {
+			vm = 1;
+		} else {
+			vm = 0;
+		}
+		return this;
+	}
+	public RFLAGS setAC(boolean b) {
+		if(b) {
+			ac = 1;
+		} else {
+			ac = 0;
+		}
+		return this;
+	}
+	public RFLAGS setVIF(boolean b) {
+		if(b) {
+			vif = 1;
+		} else {
+			vif = 0;
+		}
+		return this;
+	}
+	public RFLAGS setVIP(boolean b) {
+		if(b) {
+			vip = 1;
+		} else {
+			vip = 0;
+		}
+		return this;
+	}
+	public RFLAGS setID(boolean b) {
+		if(b) {
+			id = 1;
+		} else {
+			id = 0;
+		}
+		return this;
+	}
+}
+
+class REGISTER {
+	protected long reg;
+	protected String name;
+	protected int bit_size;
+	protected boolean upper;
+	REGISTER(String name) {
+		this.name = name;
+		bit_size = 64;
+	}
+	
+	public long toInt() {
+		if(upper && bit_size == 8) {
+			return reg & (0xff00);
+		}
+		return reg & (0xffffffff >>> bit_size);
+	}
+
+	public long set(long a) {
+		return reg = a;//‚¾‚ß`````
 	}
 }
 
@@ -216,3 +287,11 @@ class CPU {
 
 class test {
 	public static void main(String[] args){
+		RFLAGS rflags = new RFLAGS();
+		System.out.printf("%s\n", rflags);
+		rflags.setCF(true).setAC(true).setDF(true).setIOPL(2);
+		System.out.printf("%d\n", rflags.toInt());
+		System.out.print(rflags);
+	}
+}
+
