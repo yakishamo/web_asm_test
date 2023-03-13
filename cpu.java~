@@ -4,24 +4,25 @@ class RFLAGS {
 		nt = rf = vm = ac = vif = vip = id = 0;
 	}
 	protected int
-		cf,   //(0)ｿｿｿｿｿｿｿ
-		pf,   //(2)ｿｿｿｿｿｿｿ
-		af,   //(4)ｿｿｿｿｿ
-		zf,   //(6)ｿｿｿｿｿ
-		sf,   //(7)ｿｿｿｿｿ
-		tf,   //(8)ｿｿｿｿｿｿｿ
-		intf, //(9)ｿｿｿｿｿｿｿｿｿ
-		df,   //(10)ｿｿｿｿｿ
-		of,   //(11)ｿｿｿｿｿｿｿｿｿｿ
-		iopl_1, //(12)I/Oｿｿｿｿｿｿｿｿｿｿｿ2ｿｿｿｿ
+		cf,   //(0)キャリーフラグ
+		pf,   //(2)パリティフラグ
+		af,   //(4)調整フラグ
+		zf,   //(6)ゼロフラグ
+		sf,   //(7)符号フラグ
+		tf,   //(8)トラップフラグ
+		intf, //(9)割り込み可能フラグ
+		df,   //(10)方向フラグ
+		of,   //(11)オーバーフローフラグ
+		iopl_1, //(12)I/O特権レベルフィールド（2ビット）
 		iopl_2, //(13)
 		nt,   //(14)Nested Task
-		rf,   //(16)ｿｿｿｿｿ
-		vm,   //(17)ｿｿ8086ｿｿｿ
-		ac,   //(18)ｿｿｿｿｿｿｿｿｿｿ
-		vif,  //(19)ｿｿｿｿｿｿｿｿｿ
-		vip,  //(20)ｿｿｿｿｿｿｿｿｿｿｿ
-		id;   //(21)ｿｿｿｿｿ
+		rf,   //(16)再開フラグ
+		vm,   //(17)仮想8086モード
+		ac,   //(18)アライメントチェック
+		vif,  //(19)バーチャル割り込み
+		vip,  //(20)バーチャル割り込み保留
+		id;   //(21)識別フラグ
+
 	public String toString() {
 		String ret = "[ ";
 		if(CF()) ret = ret + "CF ";
@@ -265,54 +266,32 @@ class REGISTER {
 	REGISTER(String name) {
 		this.name = name;
 		bit_size = 64;
-		upper = false;
 	}
 	
 	public long toInt() {
 		if(upper && bit_size == 8) {
 			return reg & (0xff00);
 		}
-		return reg & (0xffffffff >>> (64-bit_size));
+		return reg & (0xffffffff >>> bit_size);
 	}
 
-	public REGISTER setBitsize(int bit) {
-		if(bit > 64 || bit < 0) bit = 64;
-		bit_size = bit;
-		return this;
-	}
-
-	public REGISTER setUpper(boolean b) {
-		upper = b;
-		return this;
-	}
-
-	public REGISTER setVal(long val) {
-		long mask = 0xffffffff;
-		mask = mask >>> (64-bit_size);
-		val = val & mask;
-		if(upper & bit_size == 8) {
-			val = val << 8;
-		}
-		reg = val;
-		return this;
+	public long set(long a) {
+		return reg = a;//だめ～～～～～
 	}
 }
 
 class CPU {
-	protected REGISTER rax, rbx, rcx, rdx, rsp, rbp, rsi, rdi, rip, 
+	protected long rax, rbx, rcx, rdx, rsp, rbp, rsi, rdi, rip, 
 						r8, r9, r10, r11, r12, r13, r14, r15;
 }
 
 class test {
 	public static void main(String[] args){
 		RFLAGS rflags = new RFLAGS();
-		REGISTER rax  = new REGISTER("rax");
 		System.out.printf("%s\n", rflags);
 		rflags.setCF(true).setAC(true).setDF(true).setIOPL(2);
 		System.out.printf("%d\n", rflags.toInt());
 		System.out.print(rflags);
-		System.out.printf("\n");
-		rax.setBitsize(8).setUpper(true).setVal(256);
-		System.out.printf("rax : %d\n", rax.setUpper(false).setBitsize(64).toInt());
 	}
 }
+
